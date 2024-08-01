@@ -22,7 +22,9 @@ impl Lexer {
 
 	fn skip_whitespace(&mut self) {
 
-		
+		while self.current_char != None && self.current_char.is_whitespace() {
+			self.read_char()
+		}
 	}
 
 
