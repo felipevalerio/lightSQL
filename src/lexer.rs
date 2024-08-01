@@ -20,10 +20,19 @@ impl Lexer {
     }
 
 
+	fn next_token(&mut self) {
+		
+	}
+
+
 	fn skip_whitespace(&mut self) {
 
-		while self.current_char != None && self.current_char.is_whitespace() {
-			self.read_char()
+		while let Some(c) = self.current_char {
+			if c.is_whitespace() {
+				self.read_char()
+			} else {
+				break;
+			}
 		}
 	}
 
