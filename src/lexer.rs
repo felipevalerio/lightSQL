@@ -1,4 +1,4 @@
-
+use crate::token_type::TokenType;
 
 struct Lexer {
 	input: String,
@@ -20,8 +20,8 @@ impl Lexer {
     }
 
 
-	fn next_token(&mut self) {
-		
+	fn next_token(&mut self) -> TokenType {
+		unimplemented!();
 	}
 
 

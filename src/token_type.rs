@@ -1,4 +1,4 @@
-struct TokenType {
+pub struct TokenType {
     type_: String,
     value: String,
 }
