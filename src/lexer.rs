@@ -11,7 +11,7 @@ struct Lexer {
 
 impl Lexer {
 
-	fn new(input: String, position: usize, read_position: usize, current_char: Option<char>) -> Self {
+	fn new(input: String) -> Self {
 
         let mut lexer = Lexer { input, position: 0, read_position: 0, current_char: None };
 		lexer.read_char(); // inicializa o primeiro caractere
@@ -21,20 +21,31 @@ impl Lexer {
 
 
 	fn next_token(&mut self) -> TokenType {
-		unimplemented!();
+		
+		self.skip_whitespace();
+
+		match self.current_char {
+			
+			None => TokenType::EOF,
+
+			Some(c) if c.is_alphabetic() => {
+				let input = self.read_identifier();
+				self.lookup_keyword(&input);
+			},
+
+			Some(c) if c.is_digit(10) => TokenType::Number(self.read_number()),
+
+
+		}
 	}
 
 
 	fn skip_whitespace(&mut self) {
-
-		while let Some(c) = self.current_char {
-			if c.is_whitespace() {
-				self.read_char()
-			} else {
-				break;
-			}
-		}
-	}
+		// map_or tem um valor padrão "False", mas se o current_char for diferente de None, ele atribue o valor dado "True"
+        while self.current_char.map_or(false, char::is_whitespace) {
+            self.read_char();
+        }
+    }
 
 
 	fn read_char(&mut self) {
