@@ -35,6 +35,24 @@ impl Lexer {
 
 			Some(c) if c.is_digit(10) => TokenType::new("NUMBER", self.read_number()),
 
+			Some('\'') => TokenType::new("STRING", self.read_string()),
+
+			Some(c) if "+-*/%=".contains(c) => {
+				let operator = c.to_string();
+				self.read_char();
+				TokenType::new("STRING", &operator)
+			},
+
+			Some(c) if "(),;".contains(c) => {
+				let symbol = c.to_string();
+				self.read_char();
+				TokenType::new("SYMBOL", &symbol)
+			}
+
+			_ => {
+                self.read_char();
+                TokenType::new("UNKNOWN", "")
+            }
 
 		}
 	}
@@ -70,6 +88,10 @@ impl Lexer {
 
 
 	fn read_identifier() {
+		unimplemented!();
+	}
+
+	fn read_string() {
 		unimplemented!();
 	}
 }
