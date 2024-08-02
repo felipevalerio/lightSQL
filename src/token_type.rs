@@ -1,20 +1,16 @@
-pub enum TokenType {
-    EOF,
-    Number(String),
-    String(String),
-    Operator(char),
-    Symbol(char),
-    Unknown
+pub struct TokenType {
+    token_type: String,
+    value: String,
 }
 
 
-// impl TokenType {
+impl TokenType {
 	
-//     fn new(type_: String, value: String) -> Self {
-//         TokenType { type_, value }
-//     }
+    pub fn new(token_type: &str, value: &str) -> Self {
+        TokenType { token_type: token_type.to_string(), value: value.to_string() }
+    }
 
-//     fn repr(&self) -> String {
-//         format!("Token => {} => {}", self.type_, self.value)
-//     }
-// }
+    pub fn repr(&self) -> String {
+        format!("Token => {} => {}", self.token_type, self.value)
+    }
+}

@@ -26,14 +26,14 @@ impl Lexer {
 
 		match self.current_char {
 			
-			None => TokenType::EOF,
+			None => TokenType::new("EOF", ""),
 
 			Some(c) if c.is_alphabetic() => {
 				let input = self.read_identifier();
-				self.lookup_keyword(&input);
+				self.lookup_keyword(&input)
 			},
 
-			Some(c) if c.is_digit(10) => TokenType::Number(self.read_number()),
+			Some(c) if c.is_digit(10) => TokenType::new("NUMBER", self.read_number()),
 
 
 		}
@@ -58,5 +58,18 @@ impl Lexer {
 
 		self.position = self.read_position;
 		self.read_position += 1;
+	}
+
+	fn read_number() {
+		unimplemented!();
+	}
+
+	fn lookup_keyword() {
+		unimplemented!();
+	}
+
+
+	fn read_identifier() {
+		unimplemented!();
 	}
 }
