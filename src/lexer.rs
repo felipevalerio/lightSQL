@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::token_type::TokenType;
 
 struct Lexer {
@@ -45,11 +47,11 @@ impl Lexer {
 			},
 
 			Some(c) if c.is_digit(10) => {
-				TokenType::new("NUMBER", self.read_number())
+				TokenType::new("NUMBER", &self.read_number())
 			},
 
 			Some('\'') => {
-				TokenType::new("STRING", self.read_string())
+				TokenType::new("STRING", &self.read_string())
 			},
 
 			_ => {
@@ -83,27 +85,61 @@ impl Lexer {
 		self.read_position += 1;
 	}
 
-	fn read_number(&mut self) {
+
+	fn read_number(&mut self) -> String {
 		
 		let start = self.position;
-		
-		while self.current_char.map_or(false, char::is_digit(10)) {
-			self.read_char();
-		}
 
-		self.input[start..self.position].to_string();
+		while let Some(c) = self.current_char {
+            if c.is_digit(10) {
+                self.read_char();
+            } else { break;}
+        }
+
+		self.input[start..self.position].to_string()
 	}
 
-	fn lookup_keyword() {
-		unimplemented!();
+
+	fn lookup_keyword(&mut self, input: &str) -> TokenType {
+		let keywords: HashSet<_> = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE"]
+            .iter()
+            .map(|&s| s.to_string())
+            .collect();
+
+        if keywords.contains(&input.to_uppercase()) {
+            TokenType::new("KEYWORD", input)
+        } else {
+            TokenType::new("IDENTIFIER", input)
+        }
 	}
 
 
-	fn read_identifier() {
-		unimplemented!();
+	fn read_identifier(&mut self) -> String {
+		let start = self.position;
+        while let Some(c) = self.current_char {
+            if c.is_alphanumeric() || c == '_' {
+                self.read_char();
+            } else {
+                break;
+            }
+        }
+        self.input[start..self.position].to_string()
 	}
 
-	fn read_string() {
-		unimplemented!();
+
+	fn read_string(&mut self) -> String {
+		self.read_char();
+        let start = self.position;
+        while let Some(c) = self.current_char {
+            if c != '\'' {
+                self.read_char();
+            } else {
+                break;
+            }
+        }
+        let result = self.input[start..self.position].to_string();
+        self.read_char();
+        result
 	}
+
 }
