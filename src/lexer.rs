@@ -24,18 +24,13 @@ impl Lexer {
 		
 		self.skip_whitespace();
 
+
 		match self.current_char {
-			
-			None => TokenType::new("EOF", ""),
 
 			Some(c) if c.is_alphabetic() => {
 				let input = self.read_identifier();
 				self.lookup_keyword(&input)
 			},
-
-			Some(c) if c.is_digit(10) => TokenType::new("NUMBER", self.read_number()),
-
-			Some('\'') => TokenType::new("STRING", self.read_string()),
 
 			Some(c) if "+-*/%=".contains(c) => {
 				let operator = c.to_string();
@@ -47,12 +42,22 @@ impl Lexer {
 				let symbol = c.to_string();
 				self.read_char();
 				TokenType::new("SYMBOL", &symbol)
-			}
+			},
+
+			Some(c) if c.is_digit(10) => {
+				TokenType::new("NUMBER", self.read_number())
+			},
+
+			Some('\'') => {
+				TokenType::new("STRING", self.read_string())
+			},
 
 			_ => {
                 self.read_char();
                 TokenType::new("UNKNOWN", "")
-            }
+            },
+
+			None => TokenType::new("EOF", "")
 
 		}
 	}
@@ -78,8 +83,15 @@ impl Lexer {
 		self.read_position += 1;
 	}
 
-	fn read_number() {
-		unimplemented!();
+	fn read_number(&mut self) {
+		
+		let start = self.position;
+		
+		while self.current_char.map_or(false, char::is_digit(10)) {
+			self.read_char();
+		}
+
+		self.input[start..self.position].to_string();
 	}
 
 	fn lookup_keyword() {
