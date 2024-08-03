@@ -1,5 +1,4 @@
 use std::collections::HashSet;
-
 use crate::token_type::TokenType;
 
 struct Lexer {
