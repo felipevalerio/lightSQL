@@ -29,6 +29,7 @@ impl Lexer {
 		match self.current_char {
 
 			Some(c) if c.is_alphabetic() => {
+				println!("TESTE {}", c);
 				let input = self.read_identifier();
 				self.lookup_keyword(&input)
 			},

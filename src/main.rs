@@ -7,7 +7,7 @@ fn main() {
     
     let query: String = String::from("SELECT * FROM users WHERE name = 'Felipe'");
     let mut lexer = Lexer::new(query);
-    let mut token;
+    let token;
 
     loop {
         token = lexer.next_token();
@@ -15,6 +15,7 @@ fn main() {
         if token.token_type == "EOF" {
             break;
         }
-        token.repr();
+        println!("{}", token.repr());
+        break;
     }
 }
