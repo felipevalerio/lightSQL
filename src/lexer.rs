@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use crate::token_type::TokenType;
 
-struct Lexer {
+pub struct Lexer {
 	input: String,
 	position: usize,
 	read_position: usize,
@@ -12,7 +12,7 @@ struct Lexer {
 
 impl Lexer {
 
-	fn new(input: String) -> Self {
+	pub fn new(input: String) -> Self {
 
         let mut lexer = Lexer { input, position: 0, read_position: 0, current_char: None };
 		lexer.read_char(); // inicializa o primeiro caractere
@@ -21,7 +21,7 @@ impl Lexer {
     }
 
 
-	fn next_token(&mut self) -> TokenType {
+	pub fn next_token(&mut self) -> TokenType {
 		
 		self.skip_whitespace();
 

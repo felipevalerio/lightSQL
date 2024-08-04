@@ -1,18 +1,20 @@
 mod lexer;
 mod token_type;
 
+use lexer::Lexer;
+
 fn main() {
     
     let query: String = String::from("SELECT * FROM users WHERE name = 'Felipe'");
-    let lexer = lexer::new(query);
-    let token;
+    let mut lexer = Lexer::new(query);
+    let mut token;
 
-    while true {
+    loop {
         token = lexer.next_token();
 
-        if token.token_type == 'EOF' {
+        if token.token_type == "EOF" {
             break;
         }
-        print!("{}", token)
+        token.repr();
     }
 }

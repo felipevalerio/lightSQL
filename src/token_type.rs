@@ -1,6 +1,6 @@
 pub struct TokenType {
-    token_type: String,
-    value: String,
+    pub token_type: String,
+    pub value: String,
 }
 
 
