@@ -5,9 +5,9 @@ use lexer::Lexer;
 
 fn main() {
     
-    let query: String = String::from("SELECT * FROM users WHERE name = 'Felipe'");
+    let query: String = String::from("SELECT * FROM users WHERE name = 'Felipe';");
     let mut lexer = Lexer::new(query);
-    let token;
+    let mut token;
 
     loop {
         token = lexer.next_token();
@@ -16,6 +16,5 @@ fn main() {
             break;
         }
         println!("{}", token.repr());
-        break;
     }
 }

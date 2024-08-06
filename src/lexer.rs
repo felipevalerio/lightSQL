@@ -29,24 +29,27 @@ impl Lexer {
 		match self.current_char {
 
 			Some(c) if c.is_alphabetic() => {
-				println!("TESTE {}", c);
+
 				let input = self.read_identifier();
 				self.lookup_keyword(&input)
 			},
 
 			Some(c) if "+-*/%=".contains(c) => {
+
 				let operator = c.to_string();
 				self.read_char();
 				TokenType::new("STRING", &operator)
 			},
 
 			Some(c) if "(),;".contains(c) => {
+
 				let symbol = c.to_string();
 				self.read_char();
 				TokenType::new("SYMBOL", &symbol)
 			},
 
 			Some(c) if c.is_digit(10) => {
+
 				TokenType::new("NUMBER", &self.read_number())
 			},
 
@@ -54,12 +57,12 @@ impl Lexer {
 				TokenType::new("STRING", &self.read_string())
 			},
 
+			None => TokenType::new("EOF", ""),
+
 			_ => {
                 self.read_char();
                 TokenType::new("UNKNOWN", "")
-            },
-
-			None => TokenType::new("EOF", "")
+            }
 
 		}
 	}
