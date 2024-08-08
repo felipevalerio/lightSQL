@@ -122,6 +122,11 @@ impl Lexer {
 	}
 
 
+	fn check_grammar(&mut self, input: &str) {
+		unimplemented!();
+	}
+
+
 	fn read_identifier(&mut self) -> String {
 		let start = self.position;
         while let Some(c) = self.current_char {
