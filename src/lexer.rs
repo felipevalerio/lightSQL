@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use crate::token_type::TokenType;
+use crate::token_type::{self, TokenType};
 
 pub struct Lexer {
 	input: String,
@@ -102,8 +102,13 @@ impl Lexer {
 		self.input[start..self.position].to_string()
 	}
 
-
+	// keywords primeiramente tem valores do tipo &str
+	// depois é feita a iteração nos valores (iter)
+	// transforma cada um dos valores e converte eles para String (map)
+	// e depois transforma em uma collections e o _ no HashSet
+	// pede para o compilador inferir o novo tipo do HashSet, que será String
 	fn lookup_keyword(&mut self, input: &str) -> TokenType {
+
 		let keywords: HashSet<_> = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE"]
             .iter()
             .map(|&s| s.to_string())
