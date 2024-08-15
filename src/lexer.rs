@@ -125,15 +125,16 @@ impl Lexer {
 
 	fn check_grammar(&mut self, input: &str) {
 
-		let keywords: HashSet<_> = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE"]
-            .iter()
-            .map(|&s| s.to_string())
-            .collect();
+		let words: Vec<&str> = input.split_whitespace().collect();
 
-		if keywords.contains(&input.to_uppercase()) {
-			print!("OK");
-		} else {
-			print!("Syntax error");
+		if words.is_empty() {
+			print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
+		}
+
+		match words[0] {
+			"SELECT" => check_select_statement(),
+			"UPDATE" => check_update_statement(),
+			"INSERT" => check_insert_statement()
 		}
 
 	}
