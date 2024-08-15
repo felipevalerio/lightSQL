@@ -31,7 +31,7 @@ impl Lexer {
 			Some(c) if c.is_alphabetic() => {
 
 				let input = self.read_identifier();
-				self.check_grammar(&input);
+				// self.check_grammar(&input);
 				self.lookup_keyword(&input)
 			},
 
@@ -123,21 +123,23 @@ impl Lexer {
 	}
 
 
-	fn check_grammar(&mut self, input: &str) {
+	// fn check_grammar(&mut self, input: &str) {
 
-		let words: Vec<&str> = input.split_whitespace().collect();
+	// 	let words: Vec<&str> = input.split_whitespace().collect();
 
-		if words.is_empty() {
-			print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
-		}
+	// 	if words.is_empty() {
+	// 		print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
+	// 	}
 
-		match words[0] {
-			"SELECT" => check_select_statement(),
-			"UPDATE" => check_update_statement(),
-			"INSERT" => check_insert_statement()
-		}
+	// 	match words[0] {
+	// 		"SELECT" => check_select_statement(),
+	// 		"UPDATE" => check_update_statement(),
+	// 		"INSERT" => check_insert_statement(),
+	// 		"DELETE" => check_delete_statement(),
+	// 		_ => print!("Erro de sintaxe")
+	// 	}
 
-	}
+	// }
 
 
 	fn read_identifier(&mut self) -> String {
