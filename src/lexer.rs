@@ -31,6 +31,7 @@ impl Lexer {
 			Some(c) if c.is_alphabetic() => {
 
 				let input = self.read_identifier();
+				self.check_grammar(&input);
 				self.lookup_keyword(&input)
 			},
 
@@ -123,7 +124,18 @@ impl Lexer {
 
 
 	fn check_grammar(&mut self, input: &str) {
-		unimplemented!();
+
+		let keywords: HashSet<_> = ["SELECT", "INSERT", "UPDATE", "DELETE", "FROM", "WHERE"]
+            .iter()
+            .map(|&s| s.to_string())
+            .collect();
+
+		if keywords.contains(&input.to_uppercase()) {
+			print!("OK");
+		} else {
+			print!("Syntax error");
+		}
+
 	}
 
 
