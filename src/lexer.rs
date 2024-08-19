@@ -123,23 +123,38 @@ impl Lexer {
 	}
 
 
-	// fn check_grammar(&mut self, input: &str) {
+	fn check_grammar(&mut self, input: &str) {
 
-	// 	let words: Vec<&str> = input.split_whitespace().collect();
+		let words: Vec<&str> = input.split_whitespace().collect();
 
-	// 	if words.is_empty() {
-	// 		print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
-	// 	}
+		if words.is_empty() {
+			print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
+		}
 
-	// 	match words[0] {
-	// 		"SELECT" => check_select_statement(),
-	// 		"UPDATE" => check_update_statement(),
-	// 		"INSERT" => check_insert_statement(),
-	// 		"DELETE" => check_delete_statement(),
-	// 		_ => print!("Erro de sintaxe")
-	// 	}
+		match words[0] {
+			"SELECT" => {
 
-	// }
+				if !words.contains(&"FROM") {
+					print!("Expected the keyword 'FROM' for a select like query.")
+				}
+			},
+			"UPDATE" => {
+
+				if !words.contains(&"FROM") {
+					print!("Expected the keyword 'FROM' for a update like query")
+				}
+			},
+			"INSERT" => {
+
+				if !words.contains(&"INTO") {
+					print!("Expected the keyword 'INTO' for a insert like query")
+				}
+			},
+			"DELETE" => {},
+			_ => print!("Generic syntax error")
+		}
+
+	}
 
 
 	fn read_identifier(&mut self) -> String {
