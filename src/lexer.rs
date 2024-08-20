@@ -132,25 +132,31 @@ impl Lexer {
 		}
 
 		match words[0] {
+
 			"SELECT" => {
 
 				if !words.contains(&"FROM") {
-					print!("Expected the keyword 'FROM' for a select like query.")
+					print!("Expected the keyword 'FROM' in a select like query.")
 				}
 			},
 			"UPDATE" => {
 
 				if !words.contains(&"FROM") {
-					print!("Expected the keyword 'FROM' for a update like query")
+					print!("Expected the keyword 'FROM' in a update like query")
 				}
 			},
 			"INSERT" => {
 
 				if !words.contains(&"INTO") {
-					print!("Expected the keyword 'INTO' for a insert like query")
+					print!("Expected the keyword 'INTO' in a insert like query")
 				}
 			},
-			"DELETE" => {},
+			"DELETE" => {
+
+				if !words.contains(&"FROM") {
+					print!("Expected the keyword 'FROM' in a delete like query")
+				}
+			},
 			_ => print!("Generic syntax error")
 		}
 
