@@ -1,5 +1,5 @@
-use std::collections::HashSet;
-use crate::token_type::{self, TokenType};
+use std::{collections::HashSet, process};
+use crate::token_type::TokenType;
 
 pub struct Lexer {
 	input: String,
@@ -136,25 +136,30 @@ impl Lexer {
 			"SELECT" => {
 
 				if !words.contains(&"FROM") {
-					print!("Expected the keyword 'FROM' in a select like query.")
+					// print!("Expected the keyword 'FROM' in a select like query.")
+					eprintln!("Expected the keyword 'FROM' in a select like query.");
+					process::exit(1);
 				}
 			},
 			"UPDATE" => {
 
 				if !words.contains(&"FROM") {
-					print!("Expected the keyword 'FROM' in a update like query")
+					eprintln!("Expected the keyword 'FROM' in a select like query.");
+					process::exit(1);
 				}
 			},
 			"INSERT" => {
 
 				if !words.contains(&"INTO") {
-					print!("Expected the keyword 'INTO' in a insert like query")
+					eprintln!("Expected the keyword 'INTO' in a insert like query");
+					process::exit(1);
 				}
 			},
 			"DELETE" => {
 
 				if !words.contains(&"FROM") {
-					print!("Expected the keyword 'FROM' in a delete like query")
+					eprintln!("Expected the keyword 'FROM' in a select like query.");
+					process::exit(1);
 				}
 			},
 			_ => print!("Generic syntax error")
