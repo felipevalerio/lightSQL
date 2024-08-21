@@ -135,7 +135,6 @@ impl Lexer {
 			"SELECT" => {
 
 				if !words.contains(&"FROM") {
-					// print!("Expected the keyword 'FROM' in a select like query.")
 					eprintln!("Expected the keyword 'FROM' in a select like query.");
 					process::exit(1);
 				}
