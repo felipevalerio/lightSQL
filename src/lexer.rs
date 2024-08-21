@@ -123,9 +123,9 @@ impl Lexer {
 	}
 
 
-	fn check_grammar(&mut self, input: &str) {
+	pub fn check_grammar(&mut self) {
 
-		let words: Vec<&str> = input.split_whitespace().collect();
+		let words: Vec<&str> = self.input.split_whitespace().collect();
 
 		if words.is_empty() {
 			print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
@@ -162,7 +162,10 @@ impl Lexer {
 					process::exit(1);
 				}
 			},
-			_ => print!("Generic syntax error")
+			_ => {
+					eprintln!("Error of writing.");
+					process::exit(1);
+			}
 		}
 
 	}
