@@ -162,7 +162,7 @@ impl Lexer {
 				}
 			},
 			_ => {
-					eprintln!("Error of writing.");
+					eprintln!("Unknow keyword: {}", words[0]);
 					process::exit(1);
 			}
 		}
