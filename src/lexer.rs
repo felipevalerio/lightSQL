@@ -31,7 +31,6 @@ impl Lexer {
 			Some(c) if c.is_alphabetic() => {
 
 				let input = self.read_identifier();
-				// self.check_grammar(&input);
 				self.lookup_keyword(&input)
 			},
 
