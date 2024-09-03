@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 pub struct TokenType {
     pub token_type: String,
@@ -11,10 +11,12 @@ impl TokenType {
     pub fn new(token_type: &str, value: &str) -> Self {
         TokenType { token_type: token_type.to_string(), value: value.to_string() }
     }
-    
 
-    pub fn add_hashset(&self) -> HashSet<String, String> {
-        unimplemented!();
+
+    pub fn add_hashset(&self, mut tokenized_query: HashMap<String, String>) -> HashMap<String, String> {
+        
+        tokenized_query.insert(self.token_type.clone(), self.value.clone());
+        tokenized_query
     }
 
 
