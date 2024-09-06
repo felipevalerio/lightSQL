@@ -11,15 +11,18 @@ pub enum Node {
 
 pub fn select_statement() {
 
-	if(tokenized_query.key == "KEYWORD" && tokenized_query.value == "SELECT") {
+	for (key, value) in &tokenized_query {
 
-		let mut columns = Vec::new();
+		if(key.contains_key("KEYWORD") && value == "SELECT") {
 
-		if(tokenized_query.)
+			let mut columns = Vec::new();
+
+			// if(key.)
+		}
+		else {
+			eprintln!("Expected for SELECT keyword");
+			process::exit(1);
+		}
 	}
-	else {
-		eprintln!("Expected for SELECT keyword");
-		process::exit(1);
-	}
-
+	
 }
