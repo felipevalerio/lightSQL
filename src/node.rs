@@ -9,28 +9,26 @@ pub enum Node {
 }
 
 
-pub fn select_statement() {
+pub fn select_statement() -> Result<AstNode, String> {
+
+	let mut columns = Vec::new();
+	let mut table: String;
 
 	for (key, value) in &tokenized_query {
-
-		if(key.contains_key("KEYWORD") && value == "SELECT") {
-
-			let mut columns = Vec::new();
-
-			if(key.contains_key("STRING")) {
-				columns.push(value)
-			} else {
-				eprintln!("Expected columns after the SELECT keyword");
-			}
-		}
-		else {
-			eprintln!("Expected for the SELECT keyword");
-			process::exit(1);
+		
+		if (key.contains_key("STRING")) {
+			columns.push(value);
 		}
 
-		if (key.contains_key("KEYWORD") && value == "FROM") {
-			
+		if (key.contains_key("IDENTIFIER")) {
+			table = value;
+		}
+
+		if (key.contains_key("SYMBOL") ** value == ";") {
+			return Ok(Node::Select {
+				columns,
+				table_name: table
+			})
 		}
 	}
-	
 }
