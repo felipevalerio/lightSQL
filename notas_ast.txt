@@ -1,0 +1,68 @@
+Resumo: Como Criar uma AST Baseada em uma Consulta SQL
+O Que é uma AST?
+
+Uma AST (Árvore de Sintaxe Abstrata) é uma representação hierárquica de uma estrutura de código que simplifica e organiza a análise sintática.
+Em vez de representar a consulta SQL como uma sequência linear de caracteres, uma AST organiza a consulta em uma estrutura de árvore onde cada nó 
+representa um componente ou operação específica da consulta.
+
+Estrutura de uma AST para SQL
+
+    Nó Raiz (Root Node):
+        Comando SQL: O tipo de comando (SELECT, INSERT, UPDATE, DELETE, etc.). Este é o nó raiz da árvore.
+
+    Nódulos de Comando:
+        SELECT: Se o comando é um SELECT, o nó raiz será um SelectStatement. Ele terá filhos representando os componentes da consulta SELECT.
+
+    Componentes da Consulta:
+        Projeção (Projection): Os campos que você deseja selecionar. Representado por um nó SelectList que contém os Column nodes.
+        Tabela (Table): As tabelas envolvidas. Representado por um nó FromClause que pode ter filhos Table ou Join.
+        Condições (Conditions): Condições de filtragem, como a cláusula WHERE. Representado por um nó WhereClause contendo um nó Condition que pode ser uma expressão lógica.
+        Agrupamento (Grouping): Se a consulta inclui um GROUP BY, isso será um nó GroupByClause com uma lista de colunas.
+        Ordenação (Sorting): Se a consulta inclui ORDER BY, isso será um nó OrderByClause com uma lista de colunas e direções (ASC ou DESC).
+
+    Exemplos de Estruturas de Nó:
+        SelectStatement: Representa a consulta inteira. Pode ter filhos como SelectList, FromClause, WhereClause, GroupByClause, e OrderByClause.
+        SelectList: Contém os campos a serem retornados.
+        FromClause: Contém as tabelas e possíveis junções.
+        Join: Representa a junção de tabelas e pode ter filhos como JoinType, Table, e OnCondition.
+        WhereClause: Contém a condição de filtragem.
+        Condition: Pode ser uma expressão lógica ou comparação.
+
+Criando uma AST
+
+Para construir uma AST a partir de uma consulta SQL, siga estes passos:
+
+    Análise Léxica: Quebre a consulta SQL em tokens (palavras-chave, identificadores, operadores, etc.).
+
+    Análise Sintática: Construa a estrutura da árvore a partir dos tokens, identificando a hierarquia dos componentes SQL.
+
+    Construção da Árvore:
+        Crie um nó raiz com base no tipo de comando SQL.
+        Adicione filhos ao nó raiz para cada parte da consulta (projeção, tabelas, condições, etc.).
+        Para cada parte, adicione subnós para representar detalhes específicos (como colunas selecionadas ou condições de filtragem).
+
+Exemplo de AST Simplificado para uma Consulta SQL
+
+SELECT name, age FROM users WHERE age > 18 ORDER BY name;
+
+A AST poderia ser algo assim:
+
+    SelectStatement
+        SelectList
+            Column(name)
+            Column(age)
+        FromClause
+            Table(users)
+        WhereClause
+            Condition(age > 18)
+        OrderByClause
+            Column(name)
+
+Resumo
+
+    Análise Léxica: Quebra a consulta em tokens.
+    Análise Sintática: Organiza os tokens em uma estrutura hierárquica.
+    Construção da Árvore: Cria uma árvore com nós representando diferentes partes e operações da consulta SQL.
+
+Essa estrutura ajuda a entender e manipular consultas SQL de forma programática, o que é útil em diversas aplicações, como otimizadores de consultas, 
+geradores de planos de execução, e ferramentas de análise de código.
