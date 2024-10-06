@@ -1,10 +1,22 @@
-mod token_type;
 
 pub enum Node {
 
 }
 
+struct FromClause {
 
-pub fn select_statement() -> Result<AstNode, String> {
+}
 
+struct TableName {
+
+}
+
+struct WhereClause {
+
+}
+
+pub struct SelectStatement {
+
+	name: String,
+	children: Vec<>
 }
