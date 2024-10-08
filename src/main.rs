@@ -1,6 +1,5 @@
 use std::io;
 use lexer::Lexer;
-use std::collections::HashMap;
 
 mod lexer;
 mod token_type;
@@ -9,13 +8,13 @@ mod token_type;
 
 fn main() {
     
-    let mut token;
+    let mut token: token_type::TokenType;
     let mut query: String = String::new();
 
     io::stdin().read_line(&mut query).expect("Erro na leitura");
     query = query.trim().to_uppercase();
     let mut lexer = Lexer::new(query);
-    let tokenized_query: HashMap<String, String> = HashMap::new();
+    // let tokenized_query: HashMap<String, String> = HashMap::new();
 
     lexer.check_grammar();
 
@@ -25,7 +24,9 @@ fn main() {
         if token.token_type == "EOF" {
             break;
         }
-        token.add_hashset(tokenized_query.clone());
+        
         println!("{}", token.repr());
     }
+
+    let tokens = vec![token];
 }
