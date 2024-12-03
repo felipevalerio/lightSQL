@@ -28,5 +28,6 @@ fn main() {
         println!("{}", token.repr());
     }
 
-    let tokens = vec![token];
+    
+    // build_ast(&tokens);
 }
