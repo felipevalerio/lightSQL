@@ -1,68 +1,146 @@
-Resumo: Como Criar uma AST Baseada em uma Consulta SQL
-O Que é uma AST?
+### Passo a Passo para Construir uma AST (Árvore de Sintaxe Abstrata)
 
-Uma AST (Árvore de Sintaxe Abstrata) é uma representação hierárquica de uma estrutura de código que simplifica e organiza a análise sintática.
-Em vez de representar a consulta SQL como uma sequência linear de caracteres, uma AST organiza a consulta em uma estrutura de árvore onde cada nó 
-representa um componente ou operação específica da consulta.
+---
 
-Estrutura de uma AST para SQL
+#### **1. Compreenda o Objetivo da AST**
+A **AST** é uma representação hierárquica da estrutura de uma linguagem ou consulta (no seu caso, SQL). Ela organiza as informações de maneira clara para facilitar o processamento e a execução das operações. Por exemplo:
+- Query: `SELECT * FROM USERS WHERE NAME = 'Felipe';`
+- Representação:
+  ```plaintext
+  Query
+  ├── Tipo: SELECT
+  ├── Colunas: ["*"]
+  ├── Tabela: "USERS"
+  └── Condição:
+      ├── Coluna: "NAME"
+      ├── Operador: "="
+      └── Valor: "Felipe"
+  ```
 
-    Nó Raiz (Root Node):
-        Comando SQL: O tipo de comando (SELECT, INSERT, UPDATE, DELETE, etc.). Este é o nó raiz da árvore.
+---
 
-    Nódulos de Comando:
-        SELECT: Se o comando é um SELECT, o nó raiz será um SelectStatement. Ele terá filhos representando os componentes da consulta SELECT.
+#### **2. Entenda os Componentes do SQL**
+Antes de construir a AST, liste os componentes básicos que a sua linguagem ou query pode ter:
+- **SELECT**: Quais colunas serão selecionadas?
+- **FROM**: De qual tabela?
+- **WHERE**: Há condições para filtrar os dados?
+- **INSERT**: Em qual tabela? Quais colunas e valores?
 
-    Componentes da Consulta:
-        Projeção (Projection): Os campos que você deseja selecionar. Representado por um nó SelectList que contém os Column nodes.
-        Tabela (Table): As tabelas envolvidas. Representado por um nó FromClause que pode ter filhos Table ou Join.
-        Condições (Conditions): Condições de filtragem, como a cláusula WHERE. Representado por um nó WhereClause contendo um nó Condition que pode ser uma expressão lógica.
-        Agrupamento (Grouping): Se a consulta inclui um GROUP BY, isso será um nó GroupByClause com uma lista de colunas.
-        Ordenação (Sorting): Se a consulta inclui ORDER BY, isso será um nó OrderByClause com uma lista de colunas e direções (ASC ou DESC).
+Decida quais funcionalidades você quer implementar inicialmente. Focar no básico ajuda a progredir sem se perder em complexidade.
 
-    Exemplos de Estruturas de Nó:
-        SelectStatement: Representa a consulta inteira. Pode ter filhos como SelectList, FromClause, WhereClause, GroupByClause, e OrderByClause.
-        SelectList: Contém os campos a serem retornados.
-        FromClause: Contém as tabelas e possíveis junções.
-        Join: Representa a junção de tabelas e pode ter filhos como JoinType, Table, e OnCondition.
-        WhereClause: Contém a condição de filtragem.
-        Condition: Pode ser uma expressão lógica ou comparação.
+---
 
-Criando uma AST
+#### **3. Estruture o Design da AST**
+Pense na hierarquia de dados. Cada query terá:
+1. Um tipo principal (`SELECT`, `INSERT`, etc.).
+2. Subcomponentes dependentes:
+   - **Para SELECT**:
+     - Lista de colunas.
+     - Nome da tabela.
+     - Condição (opcional).
+   - **Para INSERT**:
+     - Nome da tabela.
+     - Colunas-alvo.
+     - Valores correspondentes.
 
-Para construir uma AST a partir de uma consulta SQL, siga estes passos:
+Desenhe no papel a relação entre esses elementos, como se fosse um organograma.
 
-    Análise Léxica: Quebre a consulta SQL em tokens (palavras-chave, identificadores, operadores, etc.).
+---
 
-    Análise Sintática: Construa a estrutura da árvore a partir dos tokens, identificando a hierarquia dos componentes SQL.
+#### **4. Defina a Estrutura Hierárquica**
+Converta a hierarquia em uma ideia estruturada. Por exemplo:
+- O nó raiz é a query inteira.
+- Os filhos diretos são os componentes principais (`SELECT`, `FROM`, `WHERE`).
+- Subnós são os detalhes de cada componente (e.g., colunas selecionadas, tabela, condições).
 
-    Construção da Árvore:
-        Crie um nó raiz com base no tipo de comando SQL.
-        Adicione filhos ao nó raiz para cada parte da consulta (projeção, tabelas, condições, etc.).
-        Para cada parte, adicione subnós para representar detalhes específicos (como colunas selecionadas ou condições de filtragem).
+Isso ajuda a visualizar o que cada nó deve conter e como os componentes se conectam.
 
-Exemplo de AST Simplificado para uma Consulta SQL
+---
 
-SELECT name, age FROM users WHERE age > 18 ORDER BY name;
+#### **5. Tokenize a Entrada**
+Antes de construir a AST, você precisa transformar a query em **tokens**:
+- Cada palavra-chave, nome, operador ou símbolo vira um token.
+- Exemplo: `SELECT * FROM USERS WHERE NAME = 'Felipe';` →  
+  ```
+  [
+    KEYWORD: SELECT,
+    STRING: *,
+    KEYWORD: FROM,
+    IDENTIFIER: USERS,
+    KEYWORD: WHERE,
+    IDENTIFIER: NAME,
+    SYMBOL: =,
+    STRING: 'Felipe',
+    SYMBOL: ;
+  ]
+  ```
+Esses tokens serão a base para criar a AST.
 
-A AST poderia ser algo assim:
+---
 
-    SelectStatement
-        SelectList
-            Column(name)
-            Column(age)
-        FromClause
-            Table(users)
-        WhereClause
-            Condition(age > 18)
-        OrderByClause
-            Column(name)
+#### **6. Parseie os Tokens**
+Com os tokens prontos, percorra-os para identificar a estrutura da query e preencher a AST:
+1. **Identifique o Tipo de Query**
+   - O primeiro token geralmente indica o tipo (`SELECT`, `INSERT`, etc.).
+   - Isso determina a estrutura básica da AST.
 
-Resumo
+2. **Preencha os Subcomponentes**
+   - Se for um `SELECT`:
+     - Após `SELECT`, pegue as colunas.
+     - Após `FROM`, identifique a tabela.
+     - Se houver `WHERE`, extraia as condições.
+   - Se for um `INSERT`:
+     - Após `INSERT INTO`, identifique a tabela.
+     - Extraia as colunas (opcional) e valores.
 
-    Análise Léxica: Quebra a consulta em tokens.
-    Análise Sintática: Organiza os tokens em uma estrutura hierárquica.
-    Construção da Árvore: Cria uma árvore com nós representando diferentes partes e operações da consulta SQL.
+3. **Trate Erros**
+   - Se encontrar tokens fora do esperado, registre um erro.
+   - Isso garante que apenas queries válidas sejam representadas na AST.
 
-Essa estrutura ajuda a entender e manipular consultas SQL de forma programática, o que é útil em diversas aplicações, como otimizadores de consultas, 
-geradores de planos de execução, e ferramentas de análise de código.
+---
+
+#### **7. Organize os Dados na AST**
+A partir dos tokens, crie nós na árvore para representar cada parte da query:
+- Cada componente principal (e.g., `SELECT`, `FROM`) vira um nó.
+- Subcomponentes (e.g., colunas, condições) se tornam filhos desses nós.
+- Certifique-se de que todos os dados relevantes da query estão na árvore.
+
+---
+
+#### **8. Teste e Valide a AST**
+Para cada query:
+1. Verifique se a AST gerada reflete a estrutura esperada.
+2. Compare com um exemplo manual (desenhado no papel ou em um diagrama).
+3. Teste queries com diferentes combinações de componentes para validar robustez.
+
+---
+
+#### **9. Caminhe pela AST**
+Depois de construída, a AST será usada para executar ou transformar a query:
+- **Caminhar na AST** significa percorrer os nós para:
+  - Interpretar o que a query faz.
+  - Validar se a query é lógica (e.g., checar se as tabelas e colunas existem).
+  - Gerar instruções para o banco de dados executar.
+
+Para isso, use um método que percorra a árvore recursivamente, começando pelo nó raiz (a query).
+
+---
+
+#### **10. Expanda Gradualmente**
+Quando o básico funcionar, adicione mais funcionalidades:
+- **Suporte a outros tipos de queries**: `INSERT`, `UPDATE`, `DELETE`.
+- **Expansão das condições**: Suporte a `AND`, `OR`, parênteses, etc.
+- **Funções e expressões**: Suporte para agregações (`COUNT`, `SUM`) e operações.
+
+---
+
+#### **Resumo do Processo**
+1. Compreenda a estrutura lógica da query.
+2. Liste os componentes necessários.
+3. Transforme a entrada em tokens.
+4. Crie uma AST hierárquica baseada nos tokens.
+5. Valide a AST gerada com exemplos.
+6. Caminhe pela AST para executar ou interpretar a query.
+7. Expanda gradualmente para novos casos.
+
+Se precisar de mais explicações ou exemplos sobre algum passo específico, posso detalhar!
