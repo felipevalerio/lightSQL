@@ -3,9 +3,7 @@ use crate::token_type::TokenType;
 
 pub struct Lexer {
 	input: String,
-	position: usize,
-	read_position: usize,
-	current_char: Option<char>
+	position: usize
 }
 
 
@@ -14,7 +12,7 @@ impl Lexer {
 
 	pub fn new(input: String) -> Self {
 
-        let mut lexer = Lexer { input, position: 0, read_position: 0, current_char: None };
+        let mut lexer = Lexer { input, position: 0 };
 		lexer.read_char(); // inicializa o primeiro caractere
 		lexer // retorna a instância da "classe"
 

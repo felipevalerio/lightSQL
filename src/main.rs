@@ -12,6 +12,7 @@ fn main() {
     let mut query: String = String::new();
 
     io::stdin().read_line(&mut query).expect("Erro na leitura");
+    
     query = query.trim().to_uppercase();
     let mut lexer = Lexer::new(query);
     // let tokenized_query: HashMap<String, String> = HashMap::new();
