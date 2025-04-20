@@ -1,4 +1,3 @@
-use std::{collections::HashSet, process};
 use crate::token_type::TokenType;
 
 pub struct Lexer {
@@ -19,49 +18,49 @@ impl Lexer {
     }
 
 
-	pub fn next_token(&mut self) -> TokenType {
+	pub fn tokenize(&mut self) -> Vec<TokenType>{
+
+		let mut tokens = Vec::new();
+
+		//enquanto houver tokens, adiciona no vetor
+		while let Some(token) = self.next_token() {
+			tokens.push(token);
+		}
+
+		tokens // retorna todos os vetores encontrados
+	}
+
+
+	pub fn next_token(&mut self) -> Option<TokenType> {
 		
 		self.skip_whitespace();
 
+		if self.position >= self.input.len() {
+			return None; // Fim da string
+		}
 
-		match self.current_char {
+		let current_char = self.input.chars().nth(self.position)?;
 
-			Some(c) if c.is_alphabetic() => {
+		match current_char {
 
-				let input = self.read_identifier();
-				self.lookup_keyword(&input)
-			},
+			'*' => {
+				self.position += 1;
+				Some(TokenType::Asterisk)
+			}
+			_ if current_char.is_alphabetic() => {
 
-			Some(c) if "+-*/%=".contains(c) => {
-
-				let operator = c.to_string();
-				self.read_char();
-				TokenType::new("STRING", &operator)
-			},
-
-			Some(c) if "(),;".contains(c) => {
-
-				let symbol = c.to_string();
-				self.read_char();
-				TokenType::new("SYMBOL", &symbol)
-			},
-
-			Some(c) if c.is_digit(10) => {
-
-				TokenType::new("NUMBER", &self.read_number())
-			},
-
-			Some('\'') => {
-				TokenType::new("STRING", &self.read_string())
-			},
-
-			None => TokenType::new("EOF", ""),
-
-			_ => {
-                self.read_char();
-                TokenType::new("UNKNOWN", "")
-            }
-
+				let identifier = self.read_identifier();
+				
+				match identifier.to_uppercase().as_str() {
+					"SELECT" => Some(TokenType::Select),
+					"FROM" => Some(TokenType::From),
+					_ => Some(TokenType::Identifier(identifier)),
+				}
+			}
+       		_ => {
+				self.position += 1;
+				self.next_token()
+			}
 		}
 	}
 
@@ -196,3 +195,14 @@ impl Lexer {
 	}
 
 }
+
+// Funcionamento do lexer
+// 1 Começa na posição 0
+
+// 2 Analisa o caractere atual
+
+// 3 Decide que tipo de token ele representa
+
+// 4 Avança a posição
+
+// 5 Repete até o final da string
