@@ -30,6 +30,15 @@ impl Lexer {
 		tokens // retorna todos os vetores encontrados
 	}
 
+	// Pula espaços: skip_whitespace() avança sobre espaços, tabs, etc.
+    // Verifica fim da string: Se chegamos ao final, retorna None
+    // Pega o caractere atual
+    // Decide o tipo de token:
+    // 	Se for * → Retorna Token::Asterisk
+    // 	Se for uma letra → Lê um identificador completo
+    // 		Verifica se é uma palavra-chave ("SELECT", "FROM")
+    // 		Se não for, trata como identificador comum
+	// 		Se for outro caractere (não suportado), ignora e continua
 
 	pub fn next_token(&mut self) -> Option<TokenType> {
 		

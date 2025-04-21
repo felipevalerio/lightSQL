@@ -3,6 +3,6 @@ pub enum TokenType {
     Select,
     From,
     Asterisk,
-    Identifier(String),
+    Identifier(String), // nome da tabela
     EOF,
 }
