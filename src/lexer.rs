@@ -72,24 +72,27 @@ impl Lexer {
 		}
 	}
 
-
+	// Marca a posição inicial
+    // Avança enquanto encontrar letras
+    // Retorna a substring do identificador
 	fn read_identifier(&mut self) -> String {
 
 		let start = self.position;
 
-		while self.position < self.input.len() {
+		while self.position < self.input.len() { //enquanto a posição for menor que o tamanho total do input
 
-			let current_char = self.input.chars().nth(self.position).unwrap();
-			if !current_char.is_alphabetic() {
+			let current_char = self.input.chars().nth(self.position).unwrap(); // captura o caractere atual
+			if !current_char.is_alphabetic() { // checa se é alfabético, se não for break
 				break;
 			}
-			self.position += 1;
+			self.position += 1; // avança para o próximo caractere até encontrar algo que não seja alfabético
 		}
-		self.input[start..self.position].to_string()
+		self.input[start..self.position].to_string() // retorna a substring inteira
 	}
 
 
 	fn skip_whitespace(&mut self) {
+
 		while self.position < self.input.len() {
 
 			let current_char = self.input.chars().nth(self.position).unwrap();
@@ -97,7 +100,9 @@ impl Lexer {
 				break;
 			}
 			self.position += 1;
+		}
     }
+
 }
 
 

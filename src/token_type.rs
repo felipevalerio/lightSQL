@@ -1,4 +1,3 @@
-
 pub enum TokenType {
     Select,
     From,
