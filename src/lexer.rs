@@ -9,13 +9,13 @@ pub struct Lexer {
 
 impl Lexer {
 
-	pub fn new(input: String) -> Self {
+	// pub fn new(input: String) -> Self {
 
-        let mut lexer = Lexer { input, position: 0 };
-		lexer.read_char(); // inicializa o primeiro caractere
-		lexer // retorna a instância da "classe"
+    //     let mut lexer = Lexer { input, position: 0 };
+	// 	lexer.read_char(); // inicializa o primeiro caractere
+	// 	lexer // retorna a instância da "classe"
 
-    }
+    // }
 
 
 	pub fn tokenize(&mut self) -> Vec<TokenType>{
@@ -120,53 +120,53 @@ impl Lexer {
 	// }
 
 
-	pub fn check_grammar(&mut self) {
+	// pub fn check_grammar(&mut self) {
 
-		let words: Vec<&str> = self.input.split_whitespace().collect();
+	// 	let words: Vec<&str> = self.input.split_whitespace().collect();
 
-		if words.is_empty() {
-			print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
-		}
+	// 	if words.is_empty() {
+	// 		print!("Empty query"); // do a format in TokenType (maybe) to return a proper display
+	// 	}
 
-		match words[0] {
+	// 	match words[0] {
 
-			"SELECT" => {
+	// 		"SELECT" => {
 
-				if !words.contains(&"FROM") {
-					eprintln!("Expected the keyword 'FROM' in a select like query.");
-					process::exit(1);
-				}
-			},
-			"UPDATE" => {
+	// 			if !words.contains(&"FROM") {
+	// 				eprintln!("Expected the keyword 'FROM' in a select like query.");
+	// 				process::exit(1);
+	// 			}
+	// 		},
+	// 		"UPDATE" => {
 
-				if !words.contains(&"FROM") {
-					eprintln!("Expected the keyword 'FROM' in a select like query.");
-					process::exit(1);
-				}
-			},
-			"INSERT" => {
+	// 			if !words.contains(&"FROM") {
+	// 				eprintln!("Expected the keyword 'FROM' in a select like query.");
+	// 				process::exit(1);
+	// 			}
+	// 		},
+	// 		"INSERT" => {
 
-				if !words.contains(&"INTO") {
-					eprintln!("Expected the keyword 'INTO' in a insert like query");
-					process::exit(1);
-				}
-			},
-			"DELETE" => {
+	// 			if !words.contains(&"INTO") {
+	// 				eprintln!("Expected the keyword 'INTO' in a insert like query");
+	// 				process::exit(1);
+	// 			}
+	// 		},
+	// 		"DELETE" => {
 
-				if !words.contains(&"FROM") {
-					eprintln!("Expected the keyword 'FROM' in a select like query.");
-					process::exit(1);
-				}
-			},
-			_ => {
-					eprintln!("Unknow keyword: {}", words[0]);
-					process::exit(1);
-			}
-		}
+	// 			if !words.contains(&"FROM") {
+	// 				eprintln!("Expected the keyword 'FROM' in a select like query.");
+	// 				process::exit(1);
+	// 			}
+	// 		},
+	// 		_ => {
+	// 				eprintln!("Unknow keyword: {}", words[0]);
+	// 				process::exit(1);
+	// 		}
+	// 	}
 
-	}
+	// }
 
-}
+
 
 // Funcionamento do lexer
 // 1 Começa na posição 0
